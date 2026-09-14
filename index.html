@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Bomberos</title>
+    <!-- Librería externa para generar reportes en PDF -->
+    <script src="https://cloudflare.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header id="main-header">
+        <h1>🚒 Sistema de Control de Inventario por Carros</h1>
+    </header>
+
+    <div class="container">
+        
+        <!-- Formulario para Agregar y Editar Materiales -->
+        <section class="form-section" id="form-section">
+            <h2 id="form-title">Agregar Nuevo Material</h2>
+            <form id="material-form">
+                <input type="hidden" id="edit-id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="material-car">Carro asignado</label>
+                        <select id="material-car" required>
+                            <option value="B1">B1</option>
+                            <option value="BR1">BR1</option>
+                            <option value="Z1">Z1</option>
+                            <option value="X1">X1</option>
+                            <option value="J1">J1</option>
+                        </select>
+                    </div>
+                    <!-- ÚNICO OBLIGATORIO -->
+                    <div class="form-group">
+                        <label for="material-name">Nombre del Material</label>
+                        <input type="text" id="material-name" placeholder="Ej: Pitón de 2 y media" required>
+                    </div>
+                    <!-- LOS SIGUIENTES YA NO SON OBLIGATORIOS -->
+                    <div class="form-group">
+                        <label for="material-brand">Marca</label>
+                        <input type="text" id="material-brand" placeholder="Ej: Protek, Akron (Opcional)">
+                    </div>
+                    <div class="form-group">
+                        <label for="material-color">Color</label>
+                        <input type="text" id="material-color" placeholder="Ej: Rojo, Amarillo (Opcional)">
+                    </div>
+                    <div class="form-group">
+                        <label for="material-quantity">Cantidad</label>
+                        <input type="text" id="material-quantity" placeholder="Ej: 4 (Opcional)">
+                    </div>
+                    <div class="form-group">
+                        <label for="material-compartment">Compartimento / Ubicación</label>
+                        <input type="text" id="material-compartment" placeholder="Ej: Cajonera 1 (Opcional)">
+                    </div>
+                    <div class="form-group">
+                        <label for="material-novelty">Novedad / Observación</label>
+                        <textarea id="material-novelty" placeholder="Ej: Operativo... (Opcional)"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" id="btn-submit">Guardar Material</button>
+                        <button type="button" id="btn-cancel" class="btn-cancel" style="display: none;">Cancelar</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Panel Filtros, Descarga PDF e Impresión Directa -->
+        <div class="controls-panel" id="controls-panel">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchCar('B1')">B1</button>
+                <button class="tab-btn" onclick="switchCar('BR1')">BR1</button>
+                <button class="tab-btn" onclick="switchCar('Z1')">Z1</button>
+                <button class="tab-btn" onclick="switchCar('X1')">X1</button>
+                <button class="tab-btn" onclick="switchCar('J1')">J1</button>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-pdf" onclick="exportToPDF()">📄 Descargar PDF</button>
+                <button class="btn-print" onclick="printInventory()">🖨️ Imprimir Inventario</button>
+            </div>
+        </div>
+
+        <!-- Área de la Tabla -->
+        <div class="table-container" id="pdf-area">
+            
+            <div class="pdf-header" id="pdf-header">
+                <h1 style="color: #d32f2f; margin: 0 0 5px 0;">REPORTE DE INVENTARIO OFICIAL</h1>
+                <h3 id="pdf-subtitle" style="margin: 0; color: #555;">Carro: -</h3>
+                <p id="pdf-date" style="margin: 5px 0 0 0; font-size: 14px; color: #777;"></p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="checkbox-cell" id="th-check">¿Está?</th>
+                        <th id="th-state-pdf" style="display:none; width: 80px;">Estado</th>
+                        <th>Nombre del Material</th>
+                        <th>Marca</th>
+                        <th>Color</th>
+                        <th style="width: 110px;">Cantidad</th>
+                        <th>Compartimento</th>
+                        <th>Novedad / Estado</th>
+                        <th class="actions-cell-header" style="width: 150px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-table-body">
+                    <!-- Los datos se cargan dinámicamente -->
+                </tbody>
+            </table>
+            <div id="empty-notice" class="empty-message" style="display: none;">
+                No hay material registrado en este carro.
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
